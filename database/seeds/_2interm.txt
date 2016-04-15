@@ -1,0 +1,6 @@
+
+## Upcoming meetups' members collection [/members]
+
+### List upcoming meetups members ordered by name [GET]
++ Response 200 (application/json)
+

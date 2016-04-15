@@ -1,0 +1,15 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# KurskMeetup API
+
+KurskMeetup is an API allowing members to view information about future meetups.
+
+## Meetups Collection [/meetups?d={offset}&q={quantity}]
+
+### List upcoming meetups [GET]
++ Parameters
+    + offset (number) - Zero-based offset of meetup list. Meetups are sorted by date in descending order. If omitted, zero is assumed.
+    + quantity (number) - Maximum quantity of meetups returned. If omitted, server uses its default value.
++ Response 200 (application/json)
+
