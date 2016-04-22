@@ -13,7 +13,7 @@ class CreateContentTable extends Migration
     public function up()
     {
         Schema::create('content', function (Blueprint $table) {
-            $table->integer('topic_id')->unsigned();
+            $table->integer('topic_id');
             $table->integer('ordinal_nr');
             $table->string('url',255);
             $table->string('title',255);

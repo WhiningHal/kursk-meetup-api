@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
         DB::delete('delete from people');
         DB::delete('delete from meetups');
         DB::delete('delete from places');
-        $obj_people = json_decode(file_get_contents('/var/www/database/seeds/members.txt'),true);
+        $obj_people = json_decode(file_get_contents('/srv/kursk-meetup-api/database/seeds/members.txt'),true);
         foreach($obj_people as $k => $v)
         {
             DB::table('people')->insert(['name'=>$v['name'],'vk'=>$v['vk'],'github'=>$v['github']]);
         }
 
-        $obj_meetups = json_decode(file_get_contents('/var/www/database/seeds/meetups.txt'),true);
+        $obj_meetups = json_decode(file_get_contents('/srv/kursk-meetup-api/database/seeds/meetups.txt'),true);
         foreach($obj_meetups as $k => $v)
         {
             $placeId = DB::table('places')->select('id')->where('name','=',$v['place'])->get();
@@ -34,7 +34,9 @@ class DatabaseSeeder extends Seeder
                 $placeId = DB::table('places')->select('id')->where('name','=',$v['place'])->get();
             }
             $placeId = $placeId[0]->{'id'};
-            DB::table('meetups')->insert(['datetime'=>strval($v['datetime']), 'place_id'=>strval($placeId), 'note'=>$v['note']]);
+            DB::table('meetups')->insert(['meetupdatetime'=>strval($v['datetime']), 'place_id'=>strval($placeId), 'note'=>$v['note']]);
+            $meetupId = DB::table('meetups')->select('id')->where('meetupdatetime','=',strval($v['datetime']))->get();
+            $meetupId = $meetupId[0]->{'id'};
             foreach($v['topics'] as $nv)
             {
                 DB::table('topics')->insert(['title'=>$nv['title']]);
@@ -51,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 }
                 $authorId = DB::table('people')->select('id')->where('name','=',$nv['auname'])->get();
                 $authorId = $authorId[0]->{'id'};
-                DB::table('meetups_topics')->insert(['meetup_date'=>$v['datetime'],'topic_id'=>$topicId,'person_id'=>$authorId]);
+                DB::table('meetups_topics')->insert(['meetup_id'=>$meetupId,'topic_id'=>$topicId,'person_id'=>$authorId]);
             }
         }
     }
